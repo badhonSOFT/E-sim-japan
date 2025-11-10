@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Story from "@/components/Story";
@@ -10,6 +12,16 @@ import Footer from "@/components/Footer";
 
 
 const Index = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      window.history.replaceState({}, document.title);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />

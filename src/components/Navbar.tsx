@@ -28,8 +28,8 @@ const Navbar = () => {
     }
   };
 
-  const scrollToPlans = () => scrollToSection('plans');
   const scrollToFaq = () => scrollToSection('faq');
+  const scrollToPlans = () => scrollToSection('plans');
 
   return (
     <nav className="sticky top-0 z-50 w-full py-3 px-4 md:px-8 bg-background border-b">
@@ -48,12 +48,14 @@ const Navbar = () => {
         </Link>
         
         <div className="hidden md:flex items-center gap-6">
-          <button 
-            onClick={scrollToPlans}
-            className="text-sm text-black hover:text-primary transition-colors font-medium"
+          <Link 
+            to="/plans" 
+            className={`text-sm transition-colors ${
+              location.pathname === '/plans' ? 'text-black font-bold' : 'text-black hover:text-primary font-medium'
+            }`}
           >
             Plans
-          </button>
+          </Link>
           <Link 
             to="/devices" 
             className={`text-sm transition-colors ${
@@ -102,12 +104,17 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="absolute top-full left-0 right-0 md:hidden bg-background border-b shadow-lg">
           <div className="px-4 py-4 space-y-3">
-            <button 
-              onClick={scrollToPlans}
-              className="block w-full text-left py-2 text-sm font-medium text-black hover:text-primary transition-colors"
+            <Link 
+              to="/plans" 
+              className={`block py-2 text-sm transition-colors ${
+                location.pathname === '/plans' 
+                  ? 'text-black font-bold' 
+                  : 'text-black hover:text-primary font-medium'
+              }`}
+              onClick={() => setIsMenuOpen(false)}
             >
               Plans
-            </button>
+            </Link>
             <Link 
               to="/devices" 
               className={`block py-2 text-sm transition-colors ${
@@ -138,10 +145,7 @@ const Navbar = () => {
             </Link>
             <div className="pt-3 border-t">
               <RainbowButton 
-                onClick={() => {
-                  scrollToPlans();
-                  setIsMenuOpen(false);
-                }}
+                onClick={scrollToPlans}
                 className="w-full"
               >
                 Get eSIM

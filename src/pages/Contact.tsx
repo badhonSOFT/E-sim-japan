@@ -20,6 +20,7 @@ const Contact = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const ctx = gsap.context(() => {
       gsap.from(".contact-header", {
         opacity: 0,

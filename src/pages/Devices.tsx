@@ -11,6 +11,7 @@ const Devices = () => {
   const pageRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const ctx = gsap.context(() => {
       gsap.from(".device-header", {
         opacity: 0,

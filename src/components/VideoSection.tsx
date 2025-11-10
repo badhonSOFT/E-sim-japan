@@ -26,16 +26,7 @@ const VideoSection = () => {
             
             <div className="absolute inset-0 bg-black/40"></div>
             
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-white px-6">
-                <h2 className="text-3xl md:text-5xl font-bold mb-4">
-                  Experience Japan Connected
-                </h2>
-                <p className="text-lg md:text-xl text-white/90 max-w-2xl">
-                  See how our eSIM keeps you connected throughout your entire Japan journey
-                </p>
-              </div>
-            </div>
+         
           </div>
         </div>
       </div>
