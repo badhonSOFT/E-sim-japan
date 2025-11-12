@@ -2,7 +2,6 @@ import { CheckSquare, Mail, QrCode } from "lucide-react";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Navbar from "./Navbar";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,9 +26,7 @@ const OrderSteps = () => {
   }, []);
 
   return (
-    <>
-      <Navbar />
-      <section ref={sectionRef} className="py-16 px-4 bg-background">
+    <section ref={sectionRef} className="py-16 px-4 bg-background">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-semibold text-black">
@@ -73,7 +70,6 @@ const OrderSteps = () => {
         </div>
       </div>
     </section>
-    </>
   );
 };
 

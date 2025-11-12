@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Check, Wifi, Calendar, Shield } from "lucide-react";
+import { Check, Wifi, Calendar, Shield, Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
@@ -13,6 +13,8 @@ interface Plan {
   validity: number;
   price: number;
   networks: string;
+  popular?: boolean;
+  category?: string;
 }
 
 const plans: Plan[] = [
@@ -62,10 +64,9 @@ const plans: Plan[] = [
 
 const Plans = () => {
   const navigate = useNavigate();
-  const [selectedData, setSelectedData] = useState("All");
-  const dataOptions = ["All", "1GB", "3GB", "5GB", "10GB", "20GB", "30GB", "50GB"];
-  
-  const filteredPlans = selectedData === "All" ? plans : plans.filter(p => p.data === selectedData);
+  const [selectedDuration, setSelectedDuration] = useState(7);
+  const durations = [3, 5, 7, 10, 15, 30];
+  const dataAmounts = ["1GB", "3GB", "5GB", "10GB", "20GB", "30GB", "50GB"];
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -74,6 +75,18 @@ const Plans = () => {
   const handleSelectPlan = (plan: Plan) => {
     navigate('/', { state: { selectedPlan: { data: plan.data, validity: plan.validity } } });
   };
+
+  const getPlanByDataAndDuration = (data: string, duration: number) => {
+    return plans.find(p => p.data === data && p.validity === duration);
+  };
+
+  const popularPlans = [
+    { data: "10GB", validity: 7, label: "Most Popular" },
+    { data: "20GB", validity: 7, label: "Best Value" },
+    { data: "10GB", validity: 10, label: "Recommended" }
+  ];
+
+  const filteredPlansByDuration = plans.filter(p => p.validity === selectedDuration);
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,67 +101,150 @@ const Plans = () => {
             </p>
           </div>
 
-          <div className="flex justify-center mb-8">
-            <div className="inline-flex gap-2 p-2 bg-muted rounded-lg">
-              {dataOptions.map(data => (
+          <div className="mb-12">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">Popular Plans</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+              {popularPlans.map((popular, idx) => {
+                const plan = getPlanByDataAndDuration(popular.data, popular.validity);
+                if (!plan) return null;
+                return (
+                  <div key={idx} className="relative bg-background border-2 border-primary rounded-xl p-6 shadow-lg">
+                    <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white px-4 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                      <Star className="h-3 w-3 fill-white" />
+                      {popular.label}
+                    </div>
+                    <div className="mt-4 mb-4">
+                      <div className="text-center">
+                        <div className="text-4xl font-bold text-primary mb-2">{plan.data}</div>
+                        <div className="text-lg font-semibold">{plan.validity} Days</div>
+                      </div>
+                    </div>
+                    <div className="text-center mb-6">
+                      <span className="text-3xl font-bold">${plan.price.toFixed(2)}</span>
+                    </div>
+                    <Button className="w-full" onClick={() => handleSelectPlan(plan)}>
+                      Select Plan
+                    </Button>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="mb-8">
+            <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-center">Compare All Plans</h2>
+            <p className="text-center text-sm md:text-base text-muted-foreground mb-4 md:mb-6 px-2">Select your trip duration to see available data options</p>
+            <div className="flex justify-center mb-6 md:mb-8 flex-wrap gap-2">
+              {durations.map(duration => (
                 <button
-                  key={data}
-                  onClick={() => setSelectedData(data)}
+                  key={duration}
+                  onClick={() => setSelectedDuration(duration)}
                   className={cn(
-                    "px-4 py-2 rounded-md font-medium transition-all",
-                    selectedData === data
-                      ? "bg-primary text-white shadow-sm"
-                      : "hover:bg-background"
+                    "px-4 md:px-6 py-2 md:py-3 rounded-lg font-semibold transition-all text-sm md:text-base",
+                    selectedDuration === duration
+                      ? "bg-primary text-white shadow-md"
+                      : "bg-muted hover:bg-muted/80"
                   )}
                 >
-                  {data}
+                  {duration} Days
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredPlans.map(plan => (
-              <div key={plan.id} className="bg-background border border-border rounded-xl p-6 hover:shadow-lg transition-shadow">
-                <div className="mb-4">
-                  <div className="inline-block bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold mb-2">
-                    {plan.data}
-                  </div>
-                  <h3 className="text-xl font-bold">{plan.validity} Days</h3>
-                </div>
+          <div className="hidden md:block overflow-x-auto shadow-lg rounded-xl">
+            <table className="w-full min-w-[800px] bg-white border-collapse">
+              <thead>
+                <tr className="bg-gradient-to-r from-gray-50 to-gray-100">
+                  <th className="p-5 text-left font-bold text-gray-900 border-b-2 border-gray-200 sticky left-0 bg-primary/5 z-10 min-w-[140px]">
+                    <div className="flex items-center gap-2">
+                      <Wifi className="h-5 w-5 text-primary" />
+                      <span>Data Plan</span>
+                    </div>
+                  </th>
+                  {durations.map(d => (
+                    <th key={d} className={cn(
+                      "p-5 text-center font-bold border-b-2 border-gray-200 transition-colors",
+                      selectedDuration === d ? "bg-primary/10 text-primary" : "text-gray-700"
+                    )}>
+                      <div className="flex flex-col">
+                        <span className="text-lg">{d}</span>
+                        <span className="text-xs font-normal">Days</span>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {dataAmounts.map((data, idx) => (
+                  <tr key={data} className={cn(
+                    "hover:bg-gray-50 transition-colors",
+                    idx % 2 === 0 ? "bg-white" : "bg-gray-50/50"
+                  )}>
+                    <td className="p-5 border-b border-gray-200 sticky left-0 z-10 min-w-[140px] bg-primary/5">
+                      <div className="flex items-center justify-center">
+                        <div className="flex-shrink-0 w-20 h-16 rounded-lg bg-primary/10 flex items-center justify-center">
+                          <span className="text-primary font-bold text-xl">{data}</span>
+                        </div>
+                      </div>
+                    </td>
+                    {durations.map(duration => {
+                      const plan = getPlanByDataAndDuration(data, duration);
+                      const isSelected = selectedDuration === duration;
+                      return (
+                        <td key={duration} className={cn(
+                          "p-5 text-center border-b border-gray-200 transition-all",
+                          isSelected && "bg-primary/5"
+                        )}>
+                          {plan ? (
+                            <div className="flex flex-col items-center gap-3">
+                              <div className="text-2xl font-bold text-gray-900">${plan.price.toFixed(2)}</div>
+                              <Button 
+                                size="sm" 
+                                variant={isSelected ? "default" : "outline"}
+                                onClick={() => handleSelectPlan(plan)}
+                                className="min-w-[80px] font-semibold"
+                              >
+                                Select
+                              </Button>
+                            </div>
+                          ) : (
+                            <span className="text-gray-400 text-sm">—</span>
+                          )}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Wifi className="h-4 w-4 text-primary" />
-                    <span>{plan.data} Data</span>
+          <div className="md:hidden grid gap-4">
+            {filteredPlansByDuration.map((plan) => (
+              <div key={plan.id} className="bg-white border border-gray-200 rounded-xl p-5 shadow-md">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-16 h-14 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <span className="text-primary font-bold text-lg">{plan.data}</span>
+                    </div>
+                    <div>
+                      <div className="font-bold text-gray-900 text-lg">{plan.data}</div>
+                      <div className="text-sm text-gray-500">{plan.validity} Days</div>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Calendar className="h-4 w-4 text-primary" />
-                    <span>Valid for {plan.validity} days</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm">
-                    <Shield className="h-4 w-4 text-primary" />
-                    <span className="text-xs">{plan.networks}</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-green-600">
-                    <Check className="h-4 w-4" />
-                    <span>Instant Activation</span>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-gray-900">${plan.price.toFixed(2)}</div>
                   </div>
                 </div>
-
-                <div className="border-t pt-4 mb-4">
-                  <div className="mb-1">
-                    <span className="text-3xl font-bold text-primary">${plan.price.toFixed(2)}</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground">One-time payment</p>
-                </div>
-
                 <Button className="w-full" onClick={() => handleSelectPlan(plan)}>
                   Select Plan
                 </Button>
               </div>
             ))}
           </div>
+
+
         </div>
       </section>
 
