@@ -62,10 +62,23 @@ const packages: Package[] = [
   { id: "0be2ac90-7d69-4c2b-a112-1a38dffc9a89", name: "50 GB eSIM Data For 30 Days", data: "50GB", validity: 30, price: 31.2 },
 ];
 
+const regions = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
+const countriesByRegion: Record<string, string[]> = {
+  Africa: ["Algeria", "Benin", "Botswana", "Burkina Faso", "Cabo Verde", "Cameroon", "Central African Republic", "Chad", "Congo", "Democratic Republic of the Congo", "Côte d'Ivoire", "Egypt", "Eswatini", "Gabon", "Ghana", "Guinea", "Guinea-Bissau", "Kenya", "Lesotho", "Liberia", "Madagascar", "Malawi", "Mali", "Mauritania", "Mauritius", "Mayotte", "Morocco", "Mozambique", "Namibia", "Niger", "Nigeria", "Réunion", "Rwanda", "Senegal", "Seychelles", "South Africa", "Sudan", "Tanzania", "Togo", "Tunisia", "Uganda", "Western Sahara", "Zambia"],
+  Americas: ["Anguilla", "Antigua and Barbuda", "Argentina", "Aruba", "Bahamas", "Barbados", "Bermuda", "Bolivia", "Bonaire, Sint Eustatius and Saba", "Brazil", "British Virgin Islands", "Canada", "Cayman Islands", "Chile", "Colombia", "Costa Rica", "Curaçao", "Dominica", "Dominican Republic", "Ecuador", "El Salvador", "French Guiana", "Greenland", "Grenada", "Guadeloupe", "Guatemala", "Guyana", "Haiti", "Honduras", "Jamaica", "Martinique", "Mexico", "Montserrat", "Nicaragua", "Panama", "Paraguay", "Peru", "Puerto Rico", "Saint Barthélemy", "Saint Kitts and Nevis", "Saint Lucia", "Saint Martin", "Saint Vincent and the Grenadines", "Suriname", "Trinidad and Tobago", "Turks and Caicos Islands", "United States", "United States Virgin Islands", "Uruguay"],
+  Asia: ["Armenia", "Azerbaijan", "Bahrain", "Bangladesh", "Brunei", "Cambodia", "China", "Georgia", "Hong Kong", "India", "Indonesia", "Iran", "Iraq", "Israel", "Japan", "Jordan", "Kazakhstan", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Macau", "Malaysia", "Mongolia", "Myanmar", "Oman", "Pakistan", "Palestine", "Philippines", "Qatar", "Russia", "Saudi Arabia", "Singapore", "South Korea", "Sri Lanka", "Taiwan", "Tajikistan", "Thailand", "Turkey", "United Arab Emirates", "Uzbekistan", "Vietnam"],
+  Europe: ["Åland Islands", "Albania", "Andorra", "Austria", "Belarus", "Belgium", "Bosnia and Herzegovina", "Bulgaria", "Canary Islands", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Estonia", "Faroe Islands", "Finland", "France", "Germany", "Gibraltar", "Greece", "Guernsey", "Hungary", "Iceland", "Ireland", "Isle of Man", "Italy", "Jersey", "Latvia", "Liechtenstein", "Lithuania", "Luxembourg", "Malta", "Moldova", "Monaco", "Montenegro", "Netherlands", "Netherlands Antilles", "North Macedonia", "Norway", "Poland", "Portugal", "Romania", "San Marino", "Serbia", "Slovakia", "Slovenia", "Spain", "Sweden", "Switzerland", "Ukraine", "United Kingdom", "Vatican City State"],
+  Oceania: ["Australia", "Fiji", "Guam", "Nauru", "New Zealand", "Papua New Guinea", "Samoa", "Tonga", "Vanuatu"]
+};
+
 const PricingCard = () => {
   const location = useLocation();
   const sectionRef = useRef<HTMLElement>(null);
   const hasProcessedState = useRef(false);
+  const [selectedRegion, setSelectedRegion] = useState<string>("");
+  const [selectedCountry, setSelectedCountry] = useState<string>("");
+  const [countrySearch, setCountrySearch] = useState<string>("");
+  const [showCountryDropdown, setShowCountryDropdown] = useState<boolean>(false);
   const [selectedData, setSelectedData] = useState<string>("");
   const [selectedValidity, setSelectedValidity] = useState<string>("");
   const [customerInfo, setCustomerInfo] = useState({
@@ -80,13 +93,17 @@ const PricingCard = () => {
   const dataOptions = [...new Set(packages.map(p => p.data))];
   const validityOptions = selectedData ? packages.filter(p => p.data === selectedData) : packages.filter(p => p.data === "1GB");
   const selectedPackage = packages.find(p => p.data === selectedData && p.validity.toString() === selectedValidity);
+  const availableCountries = selectedRegion ? countriesByRegion[selectedRegion] || [] : [];
+  const filteredCountries = availableCountries.filter(country => 
+    country.toLowerCase().includes(countrySearch.toLowerCase())
+  );
 
   const handleInputChange = (field: string, value: string) => {
     setCustomerInfo(prev => ({ ...prev, [field]: value }));
   };
 
   const isFormValid = () => {
-    return selectedPackage && 
+    return selectedRegion && selectedCountry && selectedPackage && 
            customerInfo.email && customerInfo.firstName && customerInfo.lastName &&
            customerInfo.cardNumber && customerInfo.expiryDate && customerInfo.cvv;
   };
@@ -144,10 +161,68 @@ const PricingCard = () => {
           <div className="pricing-card bg-background border border-border rounded-xl p-6 space-y-6 shadow-lg">
             <h3 className="text-xl font-semibold text-foreground mb-4">Choose Your eSIM Package</h3>
             
+            {/* Region Selection */}
+            <div className="space-y-3">
+              <label className="text-lg font-bold">Select Region</label>
+              <select
+                value={selectedRegion}
+                onChange={(e) => {
+                  setSelectedRegion(e.target.value);
+                  setSelectedCountry("");
+                  setSelectedData("");
+                  setSelectedValidity("");
+                }}
+                className="w-full h-[46px] p-3 rounded-lg border-2 border-border bg-background focus:border-primary outline-none"
+              >
+                <option value="">Choose a region</option>
+                {regions.map(region => (
+                  <option key={region} value={region}>{region}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Country Selection */}
+            <div className="space-y-3 relative">
+              <label className={cn("text-lg font-bold", !selectedRegion && "text-muted-foreground")}>Select Country</label>
+              <div className="relative">
+                <Input
+                  value={selectedCountry || countrySearch}
+                  onChange={(e) => {
+                    setCountrySearch(e.target.value);
+                    setSelectedCountry("");
+                    setShowCountryDropdown(true);
+                  }}
+                  onFocus={() => setShowCountryDropdown(true)}
+                  disabled={!selectedRegion}
+                  placeholder="Search country..."
+                  className="w-full h-[46px] p-3 rounded-lg border-2 border-border bg-background focus:border-primary outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+                />
+                {showCountryDropdown && selectedRegion && filteredCountries.length > 0 && (
+                  <div className="absolute z-50 w-full mt-1 max-h-60 overflow-y-auto bg-background border-2 border-border rounded-lg shadow-lg">
+                    {filteredCountries.map(country => (
+                      <div
+                        key={country}
+                        onClick={() => {
+                          setSelectedCountry(country);
+                          setCountrySearch("");
+                          setShowCountryDropdown(false);
+                          setSelectedData("");
+                          setSelectedValidity("");
+                        }}
+                        className="p-3 hover:bg-primary/5 cursor-pointer transition-colors"
+                      >
+                        {country}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+            
             {/* Data Tabs */}
             <div className="space-y-3">
-              <label className="text-lg font-bold">Select Data Amount</label>
-              <div className="grid grid-cols-7 gap-2">
+              <label className={cn("text-lg font-bold", !selectedCountry && "text-muted-foreground")}>Select Data Amount</label>
+              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7 gap-2">
                 {dataOptions.map(data => (
                   <button
                     key={data}
@@ -155,8 +230,10 @@ const PricingCard = () => {
                       setSelectedData(data);
                       setSelectedValidity("");
                     }}
+                    disabled={!selectedCountry}
                     className={cn(
                       "p-3 rounded-lg border-2 transition-all text-center font-semibold",
+                      !selectedCountry && "opacity-50 cursor-not-allowed",
                       selectedData === data
                         ? "border-primary bg-primary/5"
                         : "border-border hover:border-primary/50"
@@ -171,7 +248,7 @@ const PricingCard = () => {
             {/* Validity Tabs */}
             <div className="space-y-3">
               <label className={cn("text-lg font-bold", !selectedData && "text-muted-foreground")}>Select Validity Period</label>
-              <div className="grid grid-cols-6 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
                 {validityOptions.map(pkg => (
                   <button
                     key={pkg.id}
