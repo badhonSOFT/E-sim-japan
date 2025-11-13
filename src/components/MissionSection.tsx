@@ -5,7 +5,7 @@ const controlImage = "/images/hero/banner.png";
 const translations = {
   EN: {
     title: 'Stay Connected Seamlessly.',
-    description: 'Traveling to Japan shouldn\'t mean losing connection with the world. No more expensive roaming charges, no more searching for WiFi hotspots.',
+    description: 'Traveling anywhere shouldn\'t mean losing connection with the world. No more expensive roaming charges, no more searching for WiFi hotspots.',
     subtitle: 'Built for travelers. Designed for convenience.'
   }
 };

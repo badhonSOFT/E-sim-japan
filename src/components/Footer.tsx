@@ -8,10 +8,10 @@ const Footer = () => {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div>
             <Link to="/" className="flex items-center mb-4">
-              <span className="font-semibold text-xl">JapanConnect</span>
+              <span className="font-semibold text-xl">Connectra</span>
             </Link>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Premium eSIM service for seamless connectivity throughout Japan.
+              Premium eSIM service for seamless connectivity worldwide.
             </p>
           </div>
 
@@ -70,7 +70,7 @@ const Footer = () => {
         </div>
 
         <div className="pt-12 border-t border-border text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} JapanConnect. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Connectra. All rights reserved.</p>
         </div>
       </div>
     </footer>

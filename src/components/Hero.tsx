@@ -1,4 +1,5 @@
 import { RainbowButton } from "@/components/ui/rainbow-button";
+import RotatingEarth from "@/components/ui/wireframe-dotted-globe";
 
 const Hero = () => {
   const scrollToPlans = () => {
@@ -76,17 +77,17 @@ const Hero = () => {
           border-radius: 24px;
         }
       `}</style>
-      <section className="relative min-h-[80vh] sm:min-h-screen flex items-start sm:items-center justify-center overflow-hidden pt-16 pb-4 sm:py-8 px-4" style={{ backgroundColor: 'white', fontFamily: '"SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-4 sm:py-8 px-3 sm:px-4" style={{ backgroundColor: 'white', fontFamily: '"SF Pro Display", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif' }}>
         <div className="container mx-auto relative z-10 max-w-6xl">
-          <div className="text-center space-y-6 sm:space-y-8">
-            <div className="space-y-2 sm:space-y-3 md:space-y-4">
-              <div className="relative mb-4 sm:mb-6 pb-2 sm:pb-0 flex justify-center">
+          <div className="text-center space-y-2 sm:space-y-8">
+            <div className="space-y-2 sm:space-y-4">
+              <div className="relative mb-3 sm:mb-8 pb-2 sm:pb-0 flex justify-center">
                 <div className="relative inline-block">
                   <h2 
-                    className="hero-animate-in-h2 text-center text-lg sm:text-xl md:text-2xl lg:text-3xl text-[#1d1d1f] font-medium mb-3 sm:mb-4"
+                    className="hero-animate-in-h2 text-center text-base sm:text-xl md:text-2xl lg:text-3xl text-[#1d1d1f] font-medium mb-2 sm:mb-4"
                     style={{ opacity: 0, transform: 'translateY(-20px)' }}
                   >
-                    Japan eSIM for Travelers
+                    Global eSIM for Travelers
                   </h2>
                   <svg 
                     width="100%" 
@@ -125,51 +126,36 @@ const Hero = () => {
                 </div>
               </div>
               <h1 
-                className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight mb-4 sm:mb-6 bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent pb-2 text-center max-w-4xl mx-auto"
-                style={{ translate: 'none', opacity: 1 }}
+                className="hero-animate-in-h1 text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight tracking-tight bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent text-center max-w-4xl mx-auto"
+                style={{ opacity: 0, transform: 'translateY(-20px)' }}
               >
-                Stay Connected in Japan from Landing to Departure
+                Stay Connected Worldwide from Landing to Departure
               </h1>
             </div>
 
             <div 
-              className="hero-animate-in-video relative z-10 flex justify-center my-8 sm:my-12"
+              className="hero-animate-in-video relative z-10 flex justify-center my-4 sm:my-12 -mx-3 sm:mx-0"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
-              <div className="w-full max-w-5xl mx-auto h-[200px] sm:h-[300px] md:h-[400px] lg:h-[450px] overflow-hidden">
-                <video 
-                  src="/video/promp.mp4"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="hero-video w-full h-full object-cover rounded-xl sm:rounded-2xl"
-                />
-              </div>
+              <RotatingEarth width={800} height={500} className="w-full max-w-[120%] sm:max-w-5xl mx-auto scale-110 sm:scale-100" />
             </div>
 
             <div 
-              className="hero-animate-in-tagline space-y-6 mt-8 sm:mt-0"
+              className="hero-animate-in-tagline mt-2 sm:mt-0"
               style={{ opacity: 0 }}
             >
-              <p className="mb-2 gradient-text text-base sm:text-lg md:text-xl text-center font-semibold leading-relaxed max-w-4xl mx-auto" style={{
-                translate: 'none',
-                rotate: 'none',
-                scale: 'none',
-                transform: 'translate(0px, 0px)',
-                opacity: 1
-              }}>
+              <p className="gradient-text text-sm sm:text-lg md:text-xl text-center font-semibold leading-relaxed max-w-4xl mx-auto">
                 Instant 5G eSIM. No Airport Queues, No Physical SIM Cards. No roaming bills. No hassle.
               </p>
             </div>
 
             <div 
-              className="hero-animate-in-buttons mt-6 sm:mt-8"
+              className="hero-animate-in-buttons mt-4 sm:mt-8"
               style={{ opacity: 0, transform: 'translateY(20px)' }}
             >
               <RainbowButton 
                 onClick={scrollToPlans}
-                className="rounded-full px-6 sm:px-8 text-sm sm:text-base h-11 sm:h-12 font-medium"
+                className="rounded-full px-8 sm:px-10 text-sm sm:text-base h-12 sm:h-12 font-medium w-full sm:w-auto max-w-xs mx-auto"
               >
                 Get Instant eSIM - 2 Min Setup
               </RainbowButton>

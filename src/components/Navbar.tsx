@@ -44,7 +44,7 @@ const Navbar = () => {
           }}
           className="font-bold text-xl text-black hover:text-primary transition-colors"
         >
-          Japan eSIM
+          Connectra
         </Link>
         
         <div className="hidden md:flex items-center gap-6">
@@ -54,7 +54,15 @@ const Navbar = () => {
               location.pathname === '/plans' ? 'text-black font-bold' : 'text-black hover:text-primary font-medium'
             }`}
           >
-            Plans
+            Regional Plans
+          </Link>
+          <Link 
+            to="/global-plans" 
+            className={`text-sm transition-colors ${
+              location.pathname === '/global-plans' ? 'text-black font-bold' : 'text-black hover:text-primary font-medium'
+            }`}
+          >
+            Global Plans
           </Link>
           <Link 
             to="/devices" 
@@ -113,7 +121,18 @@ const Navbar = () => {
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
-              Plans
+              Regional Plans
+            </Link>
+            <Link 
+              to="/global-plans" 
+              className={`block py-2 text-sm transition-colors ${
+                location.pathname === '/global-plans' 
+                  ? 'text-black font-bold' 
+                  : 'text-black hover:text-primary font-medium'
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Global Plans
             </Link>
             <Link 
               to="/devices" 
