@@ -12,6 +12,7 @@ import Terms from "./pages/Terms";
 import Privacy from "./pages/Privacy";
 import Devices from "./pages/Devices";
 import Plans from "./pages/Plans";
+import CountryPlans from "./pages/CountryPlans";
 import GlobalPlans from "./pages/GlobalPlans";
 import Admin from "./pages/Admin";
 import AdminLogin from "./pages/AdminLogin";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/devices" element={<Devices />} />
           <Route path="/plans" element={<Plans />} />
+          <Route path="/plans/:countryId" element={<CountryPlans />} />
           <Route path="/global-plans" element={<GlobalPlans />} />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />

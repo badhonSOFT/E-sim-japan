@@ -58,15 +58,7 @@ const Navbar = () => {
               location.pathname === '/plans' ? 'text-black font-bold' : 'text-black hover:text-primary font-medium'
             }`}
           >
-            Regional Plans
-          </Link>
-          <Link 
-            to="/global-plans" 
-            className={`text-sm transition-colors ${
-              location.pathname === '/global-plans' ? 'text-black font-bold' : 'text-black hover:text-primary font-medium'
-            }`}
-          >
-            Global Plans
+            Plans
           </Link>
           <Link 
             to="/devices" 
@@ -125,18 +117,7 @@ const Navbar = () => {
               }`}
               onClick={() => setIsMenuOpen(false)}
             >
-              Regional Plans
-            </Link>
-            <Link 
-              to="/global-plans" 
-              className={`block py-2 text-sm transition-colors ${
-                location.pathname === '/global-plans' 
-                  ? 'text-black font-bold' 
-                  : 'text-black hover:text-primary font-medium'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Global Plans
+              Plans
             </Link>
             <Link 
               to="/devices" 
