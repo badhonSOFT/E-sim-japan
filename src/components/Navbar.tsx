@@ -42,9 +42,13 @@ const Navbar = () => {
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }
           }}
-          className="font-bold text-xl text-black hover:text-primary transition-colors"
+          className="flex items-center"
         >
-          Connectra
+          <img 
+            src="/images/logo/logo.svg" 
+            alt="Connectra" 
+            className="h-8 w-auto"
+          />
         </Link>
         
         <div className="hidden md:flex items-center gap-6">
