@@ -311,14 +311,6 @@ const Plans = () => {
       }
     } catch (error) {
       console.error('Error fetching limited data countries:', error);
-      // Fallback to default countries if database fails
-      const fallbackCountries = [
-        { id: 'afghanistan', name: 'Afghanistan', flag: '🇦🇫' },
-        { id: 'india', name: 'India', flag: '🇮🇳' },
-        { id: 'japan', name: 'Japan', flag: '🇯🇵' }
-      ];
-      setLimitedDataCountries(fallbackCountries);
-      setSelectedCountry('afghanistan');
     }
   };
 
@@ -360,16 +352,6 @@ const Plans = () => {
       }
     } catch (error) {
       console.error('Error fetching plans for country:', error);
-      // Fallback plans if database fails
-      const fallbackPlans = [
-        { id: '1', name: '1GB for 7 days', data: '1GB', validity: 7, price: 5.99, networks: 'Premium Networks', country: countryName },
-        { id: '2', name: '3GB for 7 days', data: '3GB', validity: 7, price: 12.99, networks: 'Premium Networks', country: countryName },
-        { id: '3', name: '5GB for 7 days', data: '5GB', validity: 7, price: 19.99, networks: 'Premium Networks', country: countryName }
-      ];
-      setPlans(fallbackPlans);
-      setDurations([7, 15, 30]);
-      setDataAmounts(['1GB', '3GB', '5GB']);
-      setSelectedDuration(7);
     }
   };
 
