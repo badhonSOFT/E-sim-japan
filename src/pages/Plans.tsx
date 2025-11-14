@@ -295,7 +295,15 @@ const Plans = () => {
       
       console.log('Supabase response:', { data, error });
       
-      if (error) throw error;
+      if (error) {
+        console.error('Supabase error:', error);
+        throw error;
+      }
+      
+      if (!data || data.length === 0) {
+        console.log('No data found in limited_data_plans table');
+        return;
+      }
       
       const uniqueCountries = [...new Set(data.map(item => item.destination))]
         .map(destination => ({
@@ -315,13 +323,25 @@ const Plans = () => {
   };
 
   const fetchPlansForCountry = async (countryName: string) => {
+    console.log('Fetching plans for country:', countryName);
     try {
       const { data, error } = await supabase
         .from('limited_data_plans')
         .select('*')
         .eq('destination', countryName);
       
-      if (error) throw error;
+      console.log('Plans data response:', { data, error });
+      
+      if (error) {
+        console.error('Supabase error fetching plans:', error);
+        throw error;
+      }
+      
+      if (!data || data.length === 0) {
+        console.log('No plans found for country:', countryName);
+        setPlans([]);
+        return;
+      }
       
       const formattedPlans = data.map(plan => ({
         id: plan.id.toString(),
@@ -333,6 +353,7 @@ const Plans = () => {
         country: countryName
       }));
       
+      console.log('Formatted plans:', formattedPlans);
       setPlans(formattedPlans);
       
       // Extract unique durations and data amounts from plans
